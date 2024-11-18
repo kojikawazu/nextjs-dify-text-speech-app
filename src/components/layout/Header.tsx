@@ -29,13 +29,13 @@ const Header = () => {
     const handleSignOut = async () => {
         await signOut();
         await syncSession();
-        toast.success('SignOut Successed');
+        toast.success(COMMON_CONSTANTS.MESSAGE.SIGNOUT_SUCCESSED);
     };
 
     return (
         <header className="border-b">
             <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-                <h1 className="text-2xl font-bold">AI Chat Assistant</h1>
+                <h1 className="text-2xl font-bold">{COMMON_CONSTANTS.HEADER.TITLE}</h1>
 
                 <div className="flex justify-center items-center space-x-2">
                     {isLoading ? (
