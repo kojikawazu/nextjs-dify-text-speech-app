@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 // lib
 import { createServerSupabase } from '@/lib/supabase/supabase-server';
 // components
+import LoadingIcon from '@/components/common/LoadingIcon';
 import ChatInterface from '@/components/chat/ChatInterface';
 
 /**
@@ -21,7 +22,7 @@ const Home = async () => {
     const { data } = await supabase.auth.getUser();
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<LoadingIcon />}>
             <div className="container mx-auto px-4 py-8">
                 <ChatInterface user={data.user} />
             </div>

@@ -49,12 +49,15 @@ const ChatInterface = ({ user }: ChatInterfaceProps) => {
             sender: 'user',
         };
 
+        // メッセージを追加
         setMessages((prev) => [...prev, userMessage]);
         setInput('');
         setIsLoading(true);
 
         try {
+            // AIにメッセージを送信
             const reply = await sendMessage(input, user);
+            // AIのメッセージを追加
             const aiMessage: Message = {
                 id: Date.now() + 1,
                 text: reply,
@@ -89,7 +92,7 @@ const ChatInterface = ({ user }: ChatInterfaceProps) => {
     };
 
     return (
-        <div className="grid grid-cols-2 gap-8 h-[calc(100vh-12rem)]">
+        <div className="flex-1 overflow-y-auto grid grid-cols-2 gap-8 h-[calc(100vh-12rem)]">
             {/* アバター */}
             <div className="flex flex-col items-center justify-center gap-4">
                 <div className="flex-1 flex items-center justify-center">
@@ -136,6 +139,8 @@ const ChatInterface = ({ user }: ChatInterfaceProps) => {
                         </div>
                     ))}
                 </div>
+
+                {/* 入力 */}
                 <div className="flex gap-2">
                     <Input
                         value={input}
