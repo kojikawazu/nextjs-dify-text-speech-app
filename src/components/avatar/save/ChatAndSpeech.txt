@@ -1,0 +1,43 @@
+import { useState } from 'react';
+
+interface ChatAndSpeechProps {
+    setIsSpeaking: (isSpeaking: boolean) => void;
+}
+
+/**
+ * チャットと音声
+ * @param {ChatAndSpeechProps} props
+ * @returns JSX.Element
+ */
+const ChatAndSpeech = ({ setIsSpeaking }: ChatAndSpeechProps) => {
+    const [chat, setChat] = useState('');
+
+    const handleSpeak = () => {
+        // 音声合成
+        const synth = window.speechSynthesis;
+        // 音声合成のインスタンスを作成
+        const utterance = new SpeechSynthesisUtterance(chat);
+
+        // アニメーションのトリガーを設定 (例: リップシンク)
+        utterance.onstart = () => setIsSpeaking(true);
+        utterance.onend = () => setIsSpeaking(false);
+
+        // 音声合成を実行
+        synth.speak(utterance);
+    };
+
+    return (
+        <div>
+            <textarea
+                value={chat}
+                onChange={(e) => setChat(e.target.value)}
+                placeholder="ここにメッセージを入力"
+                rows={4}
+                cols={50}
+            />
+            <button onClick={handleSpeak}>読み上げ</button>
+        </div>
+    );
+};
+
+export default ChatAndSpeech;

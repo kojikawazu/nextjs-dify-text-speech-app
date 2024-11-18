@@ -1,0 +1,86 @@
+import { useRef, useMemo, useEffect } from 'react';
+import * as THREE from 'three';
+import { useGLTF } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
+
+interface AvatarProps {
+    isSpeaking: boolean;
+}
+
+/**
+ * アバター
+ * @param {AvatarProps} props
+ * @returns JSX.Element
+ */
+const Avatar = ({ isSpeaking }: AvatarProps) => {
+    // グループ
+    const groupRef = useRef<THREE.Group>(null);
+    // モデル
+    const { scene, nodes, animations } = useGLTF(
+        process.env.NEXT_PUBLIC_AVATAR_MODEL_PATH as string,
+    );
+
+    // 初期位置と回転を保存（基準値）
+    const initialPositions = useMemo(() => {
+        return {
+            hips: nodes.Hips.position.clone(),
+            head: nodes.Head.rotation.clone(),
+            leftHand: nodes.LeftHand.rotation.clone(),
+            rightHand: nodes.RightHand.rotation.clone(),
+        };
+    }, [nodes]);
+
+    // アニメーションミキサーの設定
+    const mixer = useMemo(() => new THREE.AnimationMixer(scene), [scene]);
+    // モーションデータが含まれていれば最初のクリップを再生
+    const action = animations.length > 0 ? mixer.clipAction(animations[0]) : null;
+
+    // アニメーションの実行
+    useFrame((_, delta) => {
+        // アニメーションの更新
+        mixer.update(delta);
+
+        // 口のメッシュを取得
+        const headMesh = nodes.Wolf3D_Head001 as THREE.SkinnedMesh;
+        if (headMesh && headMesh.morphTargetInfluences) {
+            // 口の動き（話すとき）
+            if (isSpeaking) {
+                // 口の開閉（mouthOpen）
+                headMesh.morphTargetInfluences[0] = Math.sin(Date.now() * 0.01) * 0.5 + 0.5;
+                // 少し笑顔に（mouthSmile）
+                headMesh.morphTargetInfluences[1] = 0.3;
+            } else {
+                // 通常状態
+                headMesh.morphTargetInfluences[0] = 0; // 口を閉じる
+                headMesh.morphTargetInfluences[1] = 0; // 笑顔をリセット
+            }
+        }
+    });
+
+    useEffect(() => {
+        if (animations.length > 0) {
+            const action = mixer.clipAction(animations[0]);
+            action.play();
+        }
+    }, [animations, mixer]);
+
+    // モデルの構造を確認
+    useEffect(() => {
+        console.log('Model structure:', nodes);
+        const headMesh = nodes.Wolf3D_Head001 as THREE.SkinnedMesh;
+        console.log('Morph Targets:', headMesh.morphTargetDictionary);
+        console.log('Morph Influences:', headMesh.morphTargetInfluences);
+    }, [nodes]);
+
+    return (
+        <primitive
+            ref={groupRef}
+            object={scene}
+            scale={1.8} // スケールを調整
+            position={[0, -2.3, 0]} // 位置を調整
+            rotation={[0, 0.1, 0]} // 角度を調整
+        />
+    );
+};
+
+export default Avatar;
