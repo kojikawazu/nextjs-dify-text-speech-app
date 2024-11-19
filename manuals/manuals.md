@@ -23,6 +23,10 @@ npm install supabase-js @supabase/auth-helpers-nextjs
 npm install framer-motion
 # sonnerをインストール
 npm install sonner
+# React Hook Form をインストール
+npm install react-hook-form
+# Zod (スキーマバリデーションライブラリ)
+npm install zod @hookform/resolvers
 ```
 
 ## shadcn/uiのインストール

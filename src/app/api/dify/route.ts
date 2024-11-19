@@ -56,7 +56,12 @@ export async function POST(request: Request) {
         // 必要なデータが存在するか確認
         const outputData = responseData.data?.outputs?.output_data;
         if (!outputData) {
-            console.error('POST ', COMMON_CONSTANTS.URL.API_DIFY, 'No output_data found in response:', responseData);
+            console.error(
+                'POST ',
+                COMMON_CONSTANTS.URL.API_DIFY,
+                'No output_data found in response:',
+                responseData,
+            );
             return NextResponse.json({ error: 'No output_data received' }, { status: 400 });
         }
 

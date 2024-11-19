@@ -1,12 +1,18 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Mail, Lock } from 'lucide-react';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 // lib
+import { COMMON_CONSTANTS } from '@/lib/constants';
 import { signIn } from '@/lib/supabase/supabase-server';
+// schema
+import { signInSchema } from '@/app/schema/user-shema';
 // shadcn/ui
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,15 +20,22 @@ import { Input } from '@/components/ui/input';
 import Spinner from '@/components/common/Spinner';
 import { useSupabase } from '@/components/provider/supabase-provider';
 
+/**
+ * サインインフォーム
+ * @returns JSX.Element
+ */
 const SignInForm = () => {
     // ルーター
     const router = useRouter();
     // ローディング
     const [isLoading, setIsLoading] = useState(false);
-    // フォームデータ
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
+    // React Hook Form の設定
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<z.infer<typeof signInSchema>>({
+        resolver: zodResolver(signInSchema),
     });
     // Supabase(カスタム用)
     const { syncSession } = useSupabase();
@@ -30,13 +43,12 @@ const SignInForm = () => {
     /**
      * フォーム送信処理
      */
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const onSubmit = async (data: z.infer<typeof signInSchema>) => {
         setIsLoading(true);
 
         try {
             // サインイン
-            const result = await signIn(formData.email, formData.password);
+            const result = await signIn(data.email, data.password);
 
             if (result.error) {
                 toast.error('Login Failed');
@@ -49,7 +61,7 @@ const SignInForm = () => {
             // ログイン成功
             toast.success('Login Successed');
             // リダイレクト
-            router.push('/');
+            router.push(COMMON_CONSTANTS.URL.ROOT);
         } catch (error) {
             console.error('Login error:', error);
             toast.error('Login Failed');
@@ -71,7 +83,7 @@ const SignInForm = () => {
                         <p className="text-gray-500">アカウントにログインしてください</p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                         <div className="space-y-2">
                             <label htmlFor="email" className="text-sm font-medium">
                                 メールアドレス
@@ -83,13 +95,13 @@ const SignInForm = () => {
                                     type="email"
                                     placeholder="name@example.com"
                                     className="pl-10"
-                                    value={formData.email}
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, email: e.target.value })
-                                    }
+                                    {...register('email')}
                                     required
                                 />
                             </div>
+                            {errors.email && (
+                                <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                            )}
                         </div>
 
                         <div className="space-y-2">
@@ -103,13 +115,15 @@ const SignInForm = () => {
                                     type="password"
                                     placeholder="••••••••"
                                     className="pl-10"
-                                    value={formData.password}
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, password: e.target.value })
-                                    }
+                                    {...register('password')}
                                     required
                                 />
                             </div>
+                            {errors.password && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    {errors.password.message}
+                                </p>
+                            )}
                         </div>
 
                         <Button type="submit" className="w-full" disabled={isLoading}>
