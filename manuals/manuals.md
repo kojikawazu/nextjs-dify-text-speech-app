@@ -29,6 +29,20 @@ npm install react-hook-form
 npm install zod @hookform/resolvers
 ```
 
+# テストの環境構築
+
+```bash
+# Jestのインストール
+npm install --save-dev jest @types/jest
+# ts-jestのインストール
+npm install --save-dev ts-jest @types/jest
+# React Testing Libraryのインストール
+npm install --save-dev @testing-library/react @testing-library/jest-dom
+# その他の関連ライブラリ
+npm install --save-dev @testing-library/user-event jest-environment-jsdom
+npm install --save-dev @testing-library/jest-dom
+```
+
 ## shadcn/uiのインストール
 
 ```bash
