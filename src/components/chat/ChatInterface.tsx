@@ -150,7 +150,7 @@ const ChatInterface = ({ user }: ChatInterfaceProps) => {
                         className="flex-1"
                         disabled={isLoading}
                     />
-                    <Button onClick={handleSend} disabled={isLoading}>
+                    <Button onClick={handleSend} disabled={isLoading} data-testid="send-button">
                         <Send className="h-4 w-4" />
                     </Button>
                 </div>
