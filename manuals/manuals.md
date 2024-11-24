@@ -1,6 +1,6 @@
 # マニュアル
 
-# パッケージのインストール
+## パッケージのインストール
 
 ```bash
 # prettierをインストール
@@ -23,6 +23,38 @@ npm install supabase-js @supabase/auth-helpers-nextjs
 npm install framer-motion
 # sonnerをインストール
 npm install sonner
+# React Hook Form をインストール
+npm install react-hook-form
+# Zod (スキーマバリデーションライブラリ)
+npm install zod @hookform/resolvers
+```
+
+## テストの環境構築
+
+### jestのインストール
+
+```bash
+# Jestのインストール
+npm install --save-dev jest @types/jest
+# ts-jestのインストール
+npm install --save-dev ts-jest
+# React Testing Libraryのインストール
+npm install --save-dev @testing-library/react @testing-library/jest-dom
+# その他の関連ライブラリ
+npm install --save-dev @testing-library/user-event jest-environment-jsdom
+```
+
+### E2Eテストの環境構築
+
+```bash
+# Playwrightのインストール
+npm install --save-dev @playwright/test
+# Playwrightのブラウザをインストール
+npx playwright install
+# dotenvのインストール
+npm install dotenv
+# Playwrightのテスト結果をHTMLで出力
+npx playwright show-report
 ```
 
 ## shadcn/uiのインストール

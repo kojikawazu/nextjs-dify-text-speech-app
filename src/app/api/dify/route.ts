@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+// lib
+import { COMMON_CONSTANTS } from '@/lib/constants';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,10 +13,15 @@ const DIFY_USER_ID = process.env.DIFY_USER_ID as string;
  * @returns セッション
  */
 export async function POST(request: Request) {
-    console.log('POST /api/dify');
+    console.log('POST ', COMMON_CONSTANTS.URL.API_DIFY);
+
     try {
         const { message } = await request.json();
-        console.log('POST /api/dify message: ', message);
+        console.log('POST ', COMMON_CONSTANTS.URL.API_DIFY, 'message: ', message);
+        if (!message) {
+            console.error('POST ', COMMON_CONSTANTS.URL.API_DIFY, 'No message received');
+            return NextResponse.json({ error: 'No message received' }, { status: 400 });
+        }
 
         const response = await fetch(DIFY_API_URL, {
             method: 'POST',
@@ -32,7 +39,7 @@ export async function POST(request: Request) {
         });
 
         // レスポンスが失敗した場合のエラーハンドリング
-        console.log('POST /api/dify response: ', response);
+        console.log('POST ', COMMON_CONSTANTS.URL.API_DIFY, 'response: ', response);
         if (!response.ok) {
             const errorBody = await response.text();
             console.error('Dify API Error:', errorBody);
@@ -44,19 +51,24 @@ export async function POST(request: Request) {
 
         // JSONレスポンスを直接処理
         const responseData = await response.json();
-        console.log('Dify API Response: ', responseData);
+        console.log('POST ', COMMON_CONSTANTS.URL.API_DIFY, 'Dify API Response: ', responseData);
 
         // 必要なデータが存在するか確認
         const outputData = responseData.data?.outputs?.output_data;
         if (!outputData) {
-            console.error('No output_data found in response:', responseData);
+            console.error(
+                'POST ',
+                COMMON_CONSTANTS.URL.API_DIFY,
+                'No output_data found in response:',
+                responseData,
+            );
             return NextResponse.json({ error: 'No output_data received' }, { status: 400 });
         }
 
         // 成功したレスポンスを返す
         return NextResponse.json({ text: outputData });
     } catch (error) {
-        console.error(error);
+        console.error('POST ', COMMON_CONSTANTS.URL.API_DIFY, 'error', error);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }

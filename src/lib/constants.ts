@@ -3,6 +3,7 @@
  */
 export const COMMON_CONSTANTS = {
     URL: {
+        ROOT: '/',
         API_AUTH_SESSION: '/api/auth/session',
         PAGE_LOGIN_FORM: '/auth/form',
         API_DIFY: '/api/dify',
