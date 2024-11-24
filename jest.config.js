@@ -15,4 +15,6 @@ module.exports = {
     },
     // node_modulesをトランスパイルしない
     transformIgnorePatterns: ['/node_modules/'],
+    // E2Eテストを除外
+    testPathIgnorePatterns: ['/src/__tests__/e2e/'],
 };
