@@ -35,7 +35,7 @@ git clone https://github.com/yourusername/nextjs-echo-text-speech-app.git
 -   依存関係のインストール
 
 ```bash
-cd frontend
+cd nextjs-echo-text-speech-app
 npm install
 ```
 
