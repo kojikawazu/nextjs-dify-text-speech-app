@@ -148,6 +148,7 @@ const ChatInterface = ({ user }: ChatInterfaceProps) => {
                         onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                         placeholder="メッセージを入力..."
                         className="flex-1"
+                        data-testid="message-input"
                         disabled={isLoading}
                     />
                     <Button onClick={handleSend} disabled={isLoading} data-testid="send-button">

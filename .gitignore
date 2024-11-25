@@ -41,3 +41,4 @@ next-env.d.ts
 
 # E2Eテスト
 test-results/
+playwright-report/

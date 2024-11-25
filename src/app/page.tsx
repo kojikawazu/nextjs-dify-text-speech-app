@@ -15,7 +15,7 @@ const Home = async () => {
 
     if (!supabase?.auth) {
         console.error('Supabase client not properly initialized');
-        return <div>Error loading user data</div>;
+        return <div data-testid="error-message">Error loading user data</div>;
     }
 
     // ユーザー情報の取得
@@ -23,7 +23,7 @@ const Home = async () => {
 
     return (
         <Suspense fallback={<LoadingIcon />}>
-            <div className="container mx-auto px-4 py-8">
+            <div className="container mx-auto px-4 py-8" data-testid="chat-container">
                 <ChatInterface user={data.user} />
             </div>
         </Suspense>
