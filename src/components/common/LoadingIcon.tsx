@@ -6,7 +6,7 @@ import Spinner from '@/components/common/Spinner';
  */
 const LoadingIcon = () => {
     return (
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center" data-testid="loading-spinner">
             <Spinner className="w-6 h-6 text-primary" />
         </div>
     );
