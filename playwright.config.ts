@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 /**
  * Playwrightの設定
- * @returns 
+ * @returns
  */
 export default defineConfig({
     // E2Eテスト用のディレクトリ

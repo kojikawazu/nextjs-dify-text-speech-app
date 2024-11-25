@@ -7,9 +7,9 @@ dotenv.config();
 const testEmail = process.env.NEXT_PUBLIC_E2E_TEST_EMAIL || '';
 const testPassword = process.env.NEXT_PUBLIC_E2E_TEST_PASSWORD || '';
 // ルートURL
-const ROOT_URL = "/";
+const ROOT_URL = '/';
 // 認証フォームURL
-const AUTH_FORM_URL = "/auth/form";
+const AUTH_FORM_URL = '/auth/form';
 
 test.describe('Home Page', () => {
     test.beforeEach(async ({ page }) => {
@@ -21,7 +21,7 @@ test.describe('Home Page', () => {
         // サインインボタンが表示されることを確認
         const signInButton = page.getByRole('button', { name: /signIn/i });
         await expect(signInButton).toBeVisible();
-        
+
         // URLが変更されていないことを確認（リダイレクトが発生していない）
         await expect(page).toHaveURL(ROOT_URL);
     });
@@ -52,7 +52,7 @@ test.describe('Home Page', () => {
             // メッセージ入力フォームが表示される
             const messageInput = page.locator('[data-testid="message-input"]');
             await expect(messageInput).toBeVisible();
-    
+
             // 送信ボタンが表示される
             const sendButton = page.locator('[data-testid="send-button"]');
             // ボタンが表示されるまで待機
@@ -64,36 +64,36 @@ test.describe('Home Page', () => {
         });
 
         // チャット機能のテスト
-    //     await test.step('Chat function test', async () => {
-    //         const testMessage = 'Hello, this is a test message';
+        //     await test.step('Chat function test', async () => {
+        //         const testMessage = 'Hello, this is a test message';
 
-    //         // メッセージを入力
-    //         await page.fill('[data-testid="message-input"]', testMessage);
+        //         // メッセージを入力
+        //         await page.fill('[data-testid="message-input"]', testMessage);
 
-    //         // 送信ボタンをクリック
-    //         await Promise.all([
-    //             // APIリクエストの完了を待機
-    //             page.waitForResponse(response => 
-    //                 response.url().includes(API_DIFY_URL) && 
-    //                 response.status() === 200
-    //             ),
-    //             page.click('[data-testid="send-button"]')
-    //         ]);
+        //         // 送信ボタンをクリック
+        //         await Promise.all([
+        //             // APIリクエストの完了を待機
+        //             page.waitForResponse(response =>
+        //                 response.url().includes(API_DIFY_URL) &&
+        //                 response.status() === 200
+        //             ),
+        //             page.click('[data-testid="send-button"]')
+        //         ]);
 
-    //         // ユーザーメッセージが表示されることを確認（複数の方法で検出を試みる）
-    //         const userMessageLocator = page.locator('.max-w-[80%]', {
-    //             hasText: testMessage
-    //         });
-    //         await expect(userMessageLocator).toBeVisible({ timeout: 10000 });
+        //         // ユーザーメッセージが表示されることを確認（複数の方法で検出を試みる）
+        //         const userMessageLocator = page.locator('.max-w-[80%]', {
+        //             hasText: testMessage
+        //         });
+        //         await expect(userMessageLocator).toBeVisible({ timeout: 10000 });
 
-    //         // AIの応答を待機
-    //         const aiMessageLocator = page.locator('.ai-message, [data-testid="ai-message"]');
-    //         await expect(aiMessageLocator).toBeVisible({ timeout: 15000 });
+        //         // AIの応答を待機
+        //         const aiMessageLocator = page.locator('.ai-message, [data-testid="ai-message"]');
+        //         await expect(aiMessageLocator).toBeVisible({ timeout: 15000 });
 
-    //         // AIメッセージの内容が空でないことを確認
-    //         const aiMessageText = await aiMessageLocator.textContent();
-    //         expect(aiMessageText).toBeTruthy();
-    //         expect(aiMessageText?.length).toBeGreaterThan(0);
-    //     });
+        //         // AIメッセージの内容が空でないことを確認
+        //         const aiMessageText = await aiMessageLocator.textContent();
+        //         expect(aiMessageText).toBeTruthy();
+        //         expect(aiMessageText?.length).toBeGreaterThan(0);
+        //     });
     });
 });
